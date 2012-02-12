@@ -1,0 +1,2 @@
+This is meant to be a web frontend for xmpp chat rooms. It uses Nodejs for a few minimal functions now, 
+but the plan is to expand into media hosting (proxied by node) as well as other group chat functionality. 
