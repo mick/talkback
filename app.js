@@ -1,7 +1,6 @@
 var express = require("express"),
     app = express.createServer(),
     io = require("socket.io"),
-    settings = require("./settings"),
     httpProxy = require('http-proxy'),
     request = require('request');
 
