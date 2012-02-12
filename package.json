@@ -1,0 +1,12 @@
+{
+  "name": "talkback",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": ">=2.2.0",
+    "ejs": ">=0.6.1",
+    "url": ">=0.0.1",
+    "request": ">=0.0.1",
+    "socket.io": ">= 0.0.1",
+    "http-proxy": ">=0.0.1"
+  }
+}

@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>Map Chat</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/strophejs/strophe.js"></script>
+    <script type="text/javascript" src="/static/strophe.muc.js"></script>
+    <script type="text/javascript" src="/static/strophe.vcard.js"></script>
+    <script type="text/javascript" src="/static/client.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+  </head>
+  <body>
+    <div id="navigation">
+      <div id="square"></div>
+      <div class="spacer"></div>  
+      <div id="room_title" class="title light">This is a room title</div>
+      <div class="divider"></div>
+      <div id="roster"></div>
+      <div id="log"></div>
+    </div>
+
+    <div id="chatmessage">
+      <textarea id="message"></textarea>
+      <input type="button" value="Send" id="sendmessage" />      
+    </div>
+    
+    <div id="wrapper">
+      <div id="content">
+      </div>
+    </div>
+  </body>
+</html>
