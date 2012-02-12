@@ -15,31 +15,22 @@ app.get('/room/:room', function(req, res){
     res.render('index.ejs', { layout: false});
 });
 
+
+var proxy = new httpProxy.HttpProxy({ 
+  target: {
+    host: 'talkback.im', 
+    port: 5281
+  }
+});
+app.post('/http-bind', function(req, res){
+    console.log("proxying request to ejabberd");
+    proxy.proxyRequest(req, res);
+});
+
 app.use('/static', express.static(__dirname + '/static')); 
-
 var port = process.env.PORT || 3000;
-httpProxy.createServer(function (req, res, proxy) {
-  //
-  // Put your custom server logic here
-  //
-    if(req.url == "/http-bind"){
-        console.log("proxying request to ejabberd");
-        proxy.proxyRequest(req, res, {
-            host: 'talkback.im',
-            port: 5281
-        });
-    }else{
 
-        proxy.proxyRequest(req, res, {
-            host: 'localhost',
-            port: port+1
-        });
-    }
-}).listen(port);
-
-
-
-app.listen(port+1, function() {
+app.listen(port, function() {
   console.log("Listening on " + port);
 });
 
