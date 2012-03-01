@@ -3,7 +3,6 @@ package com.talkback.model;
 import java.util.Date;
 
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.util.StringUtils;
 
 /**
  * @author Thanavath Jaroenvanit (thanavath@graphicly.com)
@@ -32,6 +31,6 @@ public class TalkBackMessage {
 	
 	public TalkBackMessage(Message msg){
 		content = msg.getBody();
-		from = StringUtils.parseBareAddress(msg.getFrom());
+		from = msg.getFrom().substring(msg.getFrom().indexOf("/") + 1);
 	}
 }

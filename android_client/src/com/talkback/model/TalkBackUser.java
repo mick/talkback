@@ -1,8 +1,7 @@
 package com.talkback.model;
 
-import org.jivesoftware.smack.SASLAuthentication;
+import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.MultiUserChat;
@@ -38,8 +37,30 @@ public class TalkBackUser {
             // Set the status to available
             Presence presence = new Presence(status);
             connection.sendPacket(presence);
+            connection.addConnectionListener(new ConnectionListener() {
+				
+				public void reconnectionSuccessful() {
+					Log.i(LOG_TAG, "reconnectionSuccessful");
+				}
+				
+				public void reconnectionFailed(Exception arg0) {
+					Log.i(LOG_TAG, "reconnectionFailed :: " + arg0);
+				}
+				
+				public void reconnectingIn(int arg0) {
+					Log.i(LOG_TAG, "reconnectingIn :: " + arg0);
+				}
+				
+				public void connectionClosedOnError(Exception arg0) {
+					Log.i(LOG_TAG, "connectionClosedOnError :: " + arg0);
+				}
+				
+				public void connectionClosed() {
+					Log.i(LOG_TAG, "connectionClosed");
+				}
+			});
             return true;
-        } catch (XMPPException ex) {
+        } catch (Exception ex) {
             Log.e(LOG_TAG, "Failed to log in as " + username);
             Log.e(LOG_TAG, ex.toString());
             return false;
@@ -60,7 +81,7 @@ public class TalkBackUser {
 			Log.i(LOG_TAG, "Joined " + room + " as " + nickname);
 			ChatRoom.insert(context, room, "", nickname, "");
 	    	return chat_room;
-		}catch (XMPPException e) {
+		}catch (Exception e) {
 			Log.e(LOG_TAG, "Failed to join chat room " + room);
 			Log.e(LOG_TAG, e.toString());
 			return null;
@@ -68,7 +89,7 @@ public class TalkBackUser {
 	}
 	
 	public MultiUserChat joinChatRoom(Context context, String room, String nickname, String password){
-		Log.i(LOG_TAG, "join room");
+		Log.i(LOG_TAG, "Joining " + room + " as " + nickname);
 	    MultiUserChat chat_room = new MultiUserChat(connection, room);
 	    try{
 	    	chat_room.join(nickname, password);
@@ -85,12 +106,11 @@ public class TalkBackUser {
 //			};
 
 	    	return chat_room;
-	    }catch (XMPPException e) {
+	    }catch (Exception e) {
 	    	Log.e(LOG_TAG, "Failed to join chat room " + room);
 	    	Log.e(LOG_TAG, e.toString());
 			return null;
 	    }
 
-        //ChatRoom.insert(getApplicationContext(), "sendme@chat.talkback.im", "zidane10", "");
 	}
 }

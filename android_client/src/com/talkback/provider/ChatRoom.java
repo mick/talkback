@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
 /**
  * @author Thanavath Jaroenvanit (thanavath@graphicly.com)
@@ -44,6 +45,11 @@ public class ChatRoom {
 	public static Cursor getAll(Context context){
 		ContentResolver cr = context.getContentResolver();
 		return cr.query(TalkBackContentProvider.CHATROOMS_CONTENT_URI, null, null, null, null);
+	}
+	
+	public static Cursor get(Context context, int position){
+		ContentResolver cr = context.getContentResolver();
+		return cr.query(Uri.withAppendedPath(TalkBackContentProvider.CHATROOMS_CONTENT_URI, position + ""), null, null, null, null);
 	}
 	
 	public static boolean insert(Context context, String chatroom_name, String chatroom_password, String nickname,

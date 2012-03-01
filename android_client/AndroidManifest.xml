@@ -15,7 +15,6 @@
         
         <activity
             android:name=".client.TalkBackActivity"
-            android:windowSoftInputMode="stateHidden"
             >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -25,8 +24,16 @@
         </activity>
         
         <activity
+            android:name=".client.LogInActivity">
+        </activity>
+        
+        <activity
             android:name=".client.ChatRoomsActivity">
-            
+        </activity>
+        
+        <activity
+            android:name=".client.ChatRoomActivity"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     
    		<provider android:name=".provider.TalkBackContentProvider"

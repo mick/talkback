@@ -1,53 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" 
-    android:weightSum="1"
-    android:background="#333333">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     
-	<ListView
-	    android:id="@+id/chat_box"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-	    
-	    
-	    
-	</ListView>
-    
-    <View
-        android:background="#555555"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-       />
-    <View
-        android:background="#555555"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-       />
-    <LinearLayout
-        android:id="@+id/send_box"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:padding="3dp"
-        android:background="#333333"
-        >
-     
-	    <EditText 
-	        android:id="@+id/msg_input"
-	        android:layout_width="0dp"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        />
-	    <Button 
-	        android:id="@+id/msg_btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="0"
-	       	android:text="Send"
-	        />
-    </LinearLayout>
+	<TextView
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:text="TALKBACK.IM SPLASH SCREEN"
+    	/>
+	
 </LinearLayout>
