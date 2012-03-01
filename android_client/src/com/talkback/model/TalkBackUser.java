@@ -1,7 +1,10 @@
 package com.talkback.model;
 
+import java.util.Iterator;
+
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 import org.jivesoftware.smackx.muc.MultiUserChat;
@@ -68,6 +71,14 @@ public class TalkBackUser {
 	}
 	
 	public void sendMessage(TalkBackMessage message){
+		if(!connection.isConnected()){
+			try {
+				connection.connect();
+			} catch (XMPPException e) {
+				Log.e(LOG_TAG, e.toString());
+				return;
+			}
+		}
 		Log.i(LOG_TAG, "Sending text [" + message.content + "] to [" + message.to + "]");
         Message msg_obj = new Message(message.to, Message.Type.chat);
         msg_obj.setBody(message.content);
@@ -75,6 +86,15 @@ public class TalkBackUser {
 	}
 	
 	public MultiUserChat joinChatRoom(Context context, String room, String nickname){
+		if(!connection.isConnected()){
+			try {
+				connection.connect();
+			} catch (XMPPException e) {
+				Log.e(LOG_TAG, e.toString());
+				return null;
+			}
+		}
+		Log.i(LOG_TAG, "Joining " + room + " as " + nickname);
 		MultiUserChat chat_room = new MultiUserChat(connection, room);
 		try{
 			chat_room.join(nickname);
@@ -89,6 +109,14 @@ public class TalkBackUser {
 	}
 	
 	public MultiUserChat joinChatRoom(Context context, String room, String nickname, String password){
+		if(!connection.isConnected()){
+			try {
+				connection.connect();
+			} catch (XMPPException e) {
+				Log.e(LOG_TAG, e.toString());
+				return null;
+			}
+		}
 		Log.i(LOG_TAG, "Joining " + room + " as " + nickname);
 	    MultiUserChat chat_room = new MultiUserChat(connection, room);
 	    try{
@@ -96,21 +124,23 @@ public class TalkBackUser {
 	    	Log.i(LOG_TAG, "Joined " + room + " as " + nickname);
 			ChatRoom.insert(context, room, "", nickname, "");
 			
-//		    Log.i(LOG_TAG, chat_room.getRoom());
-//			Log.i(LOG_TAG, chat_room.getNickname());
-//			Iterator<String> affiliates_it = chat_room.getOccupants();
-//			while(affiliates_it.hasNext()){
-//				//Occupant aff = affiliates_it.next();
-//				//Log.i(LOG_TAG, aff.getJid() + " - " + aff.getNick() + " - " + aff.getRole());
-//				Log.i(LOG_TAG, affiliates_it.next());
-//			};
-
 	    	return chat_room;
 	    }catch (Exception e) {
 	    	Log.e(LOG_TAG, "Failed to join chat room " + room);
 	    	Log.e(LOG_TAG, e.toString());
 			return null;
 	    }
-
+	}
+	
+	public void leaveRoom(MultiUserChat chatroom){
+		if(!connection.isConnected()){
+			try {
+				connection.connect();
+			} catch (XMPPException e) {
+				Log.e(LOG_TAG, e.toString());
+				return;
+			}
+		}
+		chatroom.leave();
 	}
 }

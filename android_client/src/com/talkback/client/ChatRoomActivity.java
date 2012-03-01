@@ -1,8 +1,12 @@
 package com.talkback.client;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.Roster;
+import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
@@ -55,16 +59,48 @@ public class ChatRoomActivity extends Activity {
 			initPacketListeners();
 			initChatView();
 			chatroom_cursor.moveToFirst();
-			chatRoom = ((TalkBackApplication) getApplication()).talkback_user
-					.joinChatRoom(getApplicationContext(), chatroom_cursor
-							.getString(chatroom_cursor
-									.getColumnIndex(ChatRoom._name)),
-							chatroom_cursor.getString(chatroom_cursor
-									.getColumnIndex(ChatRoom._nickname)),
-							chatroom_cursor.getString(chatroom_cursor
-									.getColumnIndex(ChatRoom._password)));
+
+			String room_name = chatroom_cursor.getString(chatroom_cursor
+					.getColumnIndex(ChatRoom._name));
+			String nickname = chatroom_cursor.getString(chatroom_cursor
+					.getColumnIndex(ChatRoom._nickname));
+			String password = chatroom_cursor.getString(chatroom_cursor
+					.getColumnIndex(ChatRoom._password));
+			if (password != null)
+				chatRoom = ((TalkBackApplication) getApplication()).talkback_user
+						.joinChatRoom(getApplicationContext(), room_name,
+								nickname, password);
+			else
+				chatRoom = ((TalkBackApplication) getApplication()).talkback_user
+						.joinChatRoom(getApplicationContext(), room_name,
+								nickname);
+
+			Log.i(LOG_TAG, "Room " + chatRoom.getRoom());
+			Log.i(LOG_TAG, "Nickname " + chatRoom.getNickname());
+			Iterator<String> affiliates_it = chatRoom.getOccupants();
+			while (affiliates_it.hasNext()) {
+				// Occupant aff = affiliates_it.next();
+				// Log.i(LOG_TAG, aff.getJid() + " - " + aff.getNick() + " - " +
+				// aff.getRole());
+				Log.i(LOG_TAG, affiliates_it.next());
+			}
+
+			//test get buddies
+			Roster roster = ((TalkBackApplication) getApplication()).talkback_user.connection.getRoster();
+			Collection<RosterEntry> entries = roster.getEntries();
+			for (RosterEntry entry : entries) {
+				Log.i(LOG_TAG, entry.getName() + "::" + entry.getUser());
+			}
 		}
 
+	}
+
+	@Override
+	protected void onDestroy() {
+		((TalkBackApplication) getApplication()).talkback_user
+				.leaveRoom(chatRoom);
+		chatRoom = null;
+		super.onDestroy();
 	}
 
 	private void initPacketListeners() {
@@ -124,24 +160,14 @@ public class ChatRoomActivity extends Activity {
 				TextView text_view = (TextView) findViewById(R.id.msg_input);
 				String msg_to_send = text_view.getText().toString();
 				if (!msg_to_send.equals("")) {
-					// final TalkBackMessage message = new
-					// TalkBackMessage("than.jaroenvanit@gmail.com",
-					// msg_to_send);
 					try {
 						chatRoom.sendMessage(msg_to_send);
 					} catch (XMPPException e) {
 						e.printStackTrace();
 					}
-					// ((TalkBackApplication)getApplication()).talkback_user.sendMessage(message);
 					text_view.setText("");
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-					// listHandler.post(new Runnable() {
-					// public void run() {
-					// messages.add(message);
-					// adapter.notifyDataSetChanged();
-					// }
-					// });
 				}
 
 			}
