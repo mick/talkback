@@ -15,18 +15,13 @@ public class XMPPUtils {
 	private static String LOG_TAG = "TalkBack::XMPPUtils";
 
 	private static String talkback_service = "talkback.im";
-	//hard coded
-	private static String host = "talkback.im";
-	private static int port = 5222;
-	
 	
 	/**
 	 * Make a connection to talkback service
 	 * @return the XMPPConnection if successfully connected, null otherwise
 	 */
 	public static XMPPConnection startConnection(){
-		ConnectionConfiguration connConfig =
-                new ConnectionConfiguration(host, port, talkback_service);
+		ConnectionConfiguration connConfig = new ConnectionConfiguration(talkback_service);
         XMPPConnection connection = new XMPPConnection(connConfig);
 		connConfig.setSASLAuthenticationEnabled(true);
         
